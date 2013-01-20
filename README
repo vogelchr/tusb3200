@@ -4,6 +4,8 @@ It can send or receive data to or from up to 4 I²S audio DAC/ADCs or a AC97
 codec. For this it runs a 8051 microcontroller core that configures the
 USB engine which more-or-less takes care of the data-transport internally.
 
+http://www.ti.com/product/tusb3200
+
 Firmware is stored in a external I2C eeprom and prefixed with a short header
 explained in the tusb3200 data sheet:
 
@@ -44,4 +46,5 @@ small eeprog utility is very useful:
 
 	eprog /dev/i2c-N 0x50 -r 0:8192 >dumpfile.bin
 
+http://www.lm-sensors.org/wiki/I2CTools
 
