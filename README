@@ -1,0 +1,47 @@
+The tusb3200 is a USB1.1 controller used to build USB/audio interfaces.
+
+It can send or receive data to or from up to 4 I²S audio DAC/ADCs or a AC97
+codec. For this it runs a 8051 microcontroller core that configures the
+USB engine which more-or-less takes care of the data-transport internally.
+
+Firmware is stored in a external I2C eeprom and prefixed with a short header
+explained in the tusb3200 data sheet:
+
+	OFFSET	TYPE		SIZE	VALUE
+
+	0	Signature	4	0x04513200
+
+	4	Header	size	1	Header	size
+
+	5	Version		1	Firmware	version
+
+	6	EEPROM	type	1	0x01	=	Reserved
+			0x02	=	Reserved
+			0x03	=	Reserved
+			0x04	=	Reserved
+			0x05	=	Reserved
+			0x06	=	Reserved
+			0x07	=	Reserved
+			0x08	=	Reserved
+			0x09	=	24C32
+			0x0A	=	24C64
+			0x0B...0xFF	Reserved
+
+	7	Data type           1  0x01 = Application code
+		0x02...0xFF	= Reserved
+
+	8	Data size           2  Data payload only size
+
+	10	Check sum           2  Check sum of the data payload
+
+	12	Data                -  Data payload
+
+Attached python script converts from raw firmware to the header-prefixed
+format stored in the eeprom.
+
+For storing data in the eeprom (or dumping the eprom) the
+small eeprog utility is very useful:
+
+	eprog /dev/i2c-N 0x50 -r 0:8192 >dumpfile.bin
+
+
