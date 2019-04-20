@@ -94,7 +94,12 @@ if opts.encode :
 	etyp = 0x0a
 	dtyp = 1
 	dsiz = len(data)
-	chksum = sum(data) & 0xffff
+	chksum = 0
+	for b in data:
+		intb=int( struct.unpack('B', b)[0] ) 
+		#print(intb)
+		chksum = chksum + intb
+	chksum = chksum & 0xffff
 	hdr = struct.pack(I2C_HDR,sign,hsiz,vers,etyp,dtyp,dsiz,chksum)
 
 	outdata = hdr + data
@@ -105,6 +110,3 @@ if opts.encode :
 	else :
 		info('Formatted image written to stdout.')
 		sys.stdout.buffer.write(str(outdata))
-
-
-
